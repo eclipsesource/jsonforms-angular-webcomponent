@@ -6,8 +6,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { JsonFormsAngularMaterialModule } from '@jsonforms/angular-material';
 import { JsonFormsAngularService } from '@jsonforms/angular';
 import { JsonFormsModule } from '@jsonforms/angular';
+import { angularMaterialRenderers } from '@jsonforms/angular-material';
 import { createCustomElement } from '@angular/elements';
-import { initialState } from './store';
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,7 +24,9 @@ import { initialState } from './store';
 
 export class AppModule {
   constructor(jsonformsService: JsonFormsAngularService, private injector: Injector) {
-    jsonformsService.init(initialState.jsonforms);
+    jsonformsService.init({
+      renderers: angularMaterialRenderers
+    });
   }
 
   ngDoBootstrap() {
