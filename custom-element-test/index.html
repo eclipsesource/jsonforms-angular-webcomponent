@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="../dist/jsonforms-angular-webcomponent/styles.css">
+</head>
+
+<body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+
+    <script type="text/javascript" src="../dist/jsonforms-angular-webcomponent/runtime-es2015.js"></script>
+    <script type="text/javascript" src="../dist/jsonforms-angular-webcomponent/polyfills-es2015.js"></script>
+    <script type="text/javascript" src="../dist/jsonforms-angular-webcomponent/main-es2015.js"></script>
+    <ng-jsonforms id="my-awesome-id" />
+    <script>
+        console.log('from index');
+        console.log('from index', document.querySelector("#my-awesome-id"));
+        const schema = {
+            type: 'object',
+            title: 'Person',
+            properties: {
+                name: {
+                    type: 'string',
+                    minLength: 3,
+                },
+                birthDate: {
+                    type: 'string',
+                    format: 'date',
+                }
+            }
+        };
+        document.querySelector("#my-awesome-id").ngElementStrategy.componentRef.instance.setJsonFormsInput(schema, { type: 'Control', scope: '#/properties/name' })
+    </script>
+</body>
+
+</html>
