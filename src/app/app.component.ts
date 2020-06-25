@@ -1,24 +1,39 @@
-import { Actions, JsonSchema, UISchemaElement } from '@jsonforms/core';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { Actions } from '@jsonforms/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+} from '@angular/core';
 
 import { JsonFormsAngularService } from '@jsonforms/angular';
 
 @Component({
-  selector: 'app-root',
+  selector: 'ng-jsonforms',
   template: `<jsonforms-outlet></jsonforms-outlet>`,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent {
+export class AppComponent implements OnChanges {
+  @Input() uischema: string;
+  @Input() schema: string;
+  @Input() data: string;
 
-  constructor(private jsonformsService: JsonFormsAngularService, private cdr: ChangeDetectorRef) {
-  }
+  constructor(
+    private jsonformsService: JsonFormsAngularService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
-  setJsonFormsInput(
-    schema: JsonSchema,
-    uiSchema?: UISchemaElement,
-    data: any = {}
-  ) {
-    this.jsonformsService.updateCore(Actions.init(data, schema, uiSchema));
+  ngOnChanges(changes: SimpleChanges): void {
+    const dataObject = this.data ? JSON.parse(this.data) : undefined;
+    const schemaObject = this.schema ? JSON.parse(this.schema) : undefined;
+    const uiSchemaObject = this.uischema
+      ? JSON.parse(this.uischema)
+      : undefined;
+    this.jsonformsService.updateCore(
+      Actions.init(dataObject, schemaObject, uiSchemaObject)
+    );
     this.cdr.detectChanges();
   }
 }
