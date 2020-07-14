@@ -1,4 +1,4 @@
-import { Actions } from '@jsonforms/core';
+import { Actions, createAjv } from '@jsonforms/core';
 import {
   Component,
   Input,
@@ -11,11 +11,12 @@ import {
 import { JsonFormsAngularService } from '@jsonforms/angular';
 
 @Component({
-  selector: 'ng-jsonforms',
+  selector: 'app-ng-jsonforms',
   template: `<jsonforms-outlet></jsonforms-outlet>`,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnChanges {
+  @Input() options: string;
   @Input() uischema: string;
   @Input() schema: string;
   @Input() data: string;
@@ -26,13 +27,15 @@ export class AppComponent implements OnChanges {
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    const dataObject = this.data ? JSON.parse(this.data) : undefined;
+    const dataObject = this.data ? JSON.parse(this.data) : {};
     const schemaObject = this.schema ? JSON.parse(this.schema) : undefined;
     const uiSchemaObject = this.uischema
       ? JSON.parse(this.uischema)
       : undefined;
+    const optionsObject = this.options ? JSON.parse(this.options) : undefined;
+    const ajv = createAjv(optionsObject);
     this.jsonformsService.updateCore(
-      Actions.init(dataObject, schemaObject, uiSchemaObject)
+      Actions.init(dataObject, schemaObject, uiSchemaObject, ajv)
     );
     this.cdr.detectChanges();
   }
