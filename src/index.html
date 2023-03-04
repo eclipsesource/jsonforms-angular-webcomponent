@@ -11,8 +11,13 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
-  <ng-jsonforms></ng-jsonforms>
+  <ng-jsonforms id="with-object"></ng-jsonforms>
+  <br />
+  <hr />
+  <br />
+  <ng-jsonforms id="with-json"></ng-jsonforms>
   <script>
+    // Data
     const schema = {
       type: "object",
       title: "Person",
@@ -27,17 +32,26 @@
         },
         foo: {
           type: "boolean",
-         default: true,
+          default: true,
         },
       },
     };
     const data = { name: 5 };
-    const options = { useDefaults: true };
-    const form = document.querySelector('ng-jsonforms');
-    form.schema = schema;
-    form.data = data;
-    form.options = options;
-    form.addEventListener('dataChange', (evt) => console.log("dataChange", evt.detail));
+    const ajv = { useDefaults: true };
+
+    // Using JsonForms with objects
+    const formWithObj = document.getElementById('with-object');
+    formWithObj.schema = schema;
+    formWithObj.data = data;
+    formWithObj.ajv = ajv;
+    formWithObj.addEventListener('dataChange', (evt) => console.log("with-object:dataChange", evt.detail));
+
+    // Using JsonFroms with string, like <ng-jsonforms schema='{"type": "object"...}'...></ng-jsonforms>
+    const formWithJson = document.getElementById('with-json');
+    formWithJson.schema = JSON.stringify(schema);
+    formWithJson.data = JSON.stringify(data);
+    formWithJson.ajv = JSON.stringify(ajv);
+    formWithJson.addEventListener('dataChange', (evt) => console.log("with-json:dataChange", evt.detail));
   </script>
 </body>
 </html>
