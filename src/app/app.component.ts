@@ -1,4 +1,4 @@
-import { Actions, createAjv } from '@jsonforms/core';
+import { createAjv } from '@jsonforms/core';
 import {
   Component,
   Input,
@@ -6,37 +6,40 @@ import {
   SimpleChanges,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
+  OnInit,
 } from '@angular/core';
 
-import { JsonFormsAngularService } from '@jsonforms/angular';
+import { JsonFormsAngularService, JsonForms } from '@jsonforms/angular';
+import { angularMaterialRenderers } from '@jsonforms/angular-material';
 
 @Component({
   selector: 'app-ng-jsonforms',
   template: `<jsonforms-outlet></jsonforms-outlet>`,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [JsonFormsAngularService]
 })
-export class AppComponent implements OnChanges {
-  @Input() options: string;
-  @Input() uischema: string;
-  @Input() schema: string;
-  @Input() data: string;
+export class AppComponent extends JsonForms implements OnChanges, OnInit {
+
+  @Input() override ajv = createAjv({
+    schemaId: 'id',
+    allErrors: true,
+    useDefaults: true
+  });
+  @Input() override renderers = angularMaterialRenderers;
 
   constructor(
-    private jsonformsService: JsonFormsAngularService,
+    jsonformsService: JsonFormsAngularService,
     private cdr: ChangeDetectorRef
-  ) {}
-
-  ngOnChanges(changes: SimpleChanges): void {
-    const dataObject = this.data ? JSON.parse(this.data) : {};
-    const schemaObject = this.schema ? JSON.parse(this.schema) : undefined;
-    const uiSchemaObject = this.uischema
-      ? JSON.parse(this.uischema)
-      : undefined;
-    const optionsObject = this.options ? JSON.parse(this.options) : undefined;
-    const ajv = createAjv(optionsObject);
-    this.jsonformsService.updateCore(
-      Actions.init(dataObject, schemaObject, uiSchemaObject, ajv)
-    );
-    this.cdr.detectChanges();
+  ) {
+    super(jsonformsService);
   }
+  
+  override ngOnInit(): void {
+    super.ngOnInit();
+  }
+  
+  override ngOnChanges(changes: SimpleChanges): void {
+    super.ngOnChanges(changes);
+  }
+
 }

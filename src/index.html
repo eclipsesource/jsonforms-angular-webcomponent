@@ -1,42 +1,43 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>JsonformsAngularWebcomponent</title>
-    <base href="/" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/x-icon" href="favicon.ico" />
-  </head>
-  <body>
-    <script>
-      const schema = {
-        type: "object",
-        title: "Person",
-        properties: {
-          name: {
-            type: "string",
-            minLength: 3,
-          },
-          birthDate: {
-            type: "string",
-            format: "date",
-          },
-          foo: {
-            type: "boolean",
-           default: true,
-          },
+<head>
+  <meta charset="utf-8">
+  <title>JsonformsAngularWebcomponent</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+  <ng-jsonforms></ng-jsonforms>
+  <script>
+    const schema = {
+      type: "object",
+      title: "Person",
+      properties: {
+        name: {
+          type: "string",
+          minLength: 3,
         },
-      };
-      const data = { name: 5 };
-      const options = { useDefaults: true };
-      document.body.innerHTML =
-        "<ng-jsonforms schema=" +
-        JSON.stringify(schema) +
-        " data=" +
-        JSON.stringify(data) +
-        " options=" +
-        JSON.stringify(options) +
-        " />";
-    </script>
-  </body>
+        birthDate: {
+          type: "string",
+          format: "date",
+        },
+        foo: {
+          type: "boolean",
+         default: true,
+        },
+      },
+    };
+    const data = { name: 5 };
+    const options = { useDefaults: true };
+    const form = document.querySelector('ng-jsonforms');
+    form.schema = schema;
+    form.data = data;
+    form.options = options;
+    form.addEventListener('dataChange', (evt) => console.log("dataChange", evt.detail));
+  </script>
+</body>
 </html>
