@@ -17,41 +17,43 @@
   <br />
   <ng-jsonforms id="with-json"></ng-jsonforms>
   <script>
-    // Data
-    const schema = {
-      type: "object",
-      title: "Person",
-      properties: {
-        name: {
-          type: "string",
-          minLength: 3,
+    setTimeout(() => {
+      // Data
+      const schema = {
+        type: "object",
+        title: "Person",
+        properties: {
+          name: {
+            type: "string",
+            minLength: 3,
+          },
+          birthDate: {
+            type: "string",
+            format: "date",
+          },
+          foo: {
+            type: "boolean",
+            default: true,
+          },
         },
-        birthDate: {
-          type: "string",
-          format: "date",
-        },
-        foo: {
-          type: "boolean",
-          default: true,
-        },
-      },
-    };
-    const data = { name: 5 };
-    const ajv = { useDefaults: true };
+      };
+      const data = { name: 5 };
+      const options = { useDefaults: true };
 
-    // Using JsonForms with objects
-    const formWithObj = document.getElementById('with-object');
-    formWithObj.schema = schema;
-    formWithObj.data = data;
-    formWithObj.ajv = ajv;
-    formWithObj.addEventListener('dataChange', (evt) => console.log("with-object:dataChange", evt.detail));
+      // Using JsonForms with objects
+      const formWithObj = document.getElementById('with-object');
+      formWithObj.schema = schema;
+      formWithObj.data = data;
+      formWithObj.options = options;
+      formWithObj.addEventListener('dataChange', (evt) => console.log("with-object:dataChange", evt.detail));
 
-    // Using JsonFroms with string, like <ng-jsonforms schema='{"type": "object"...}'...></ng-jsonforms>
-    const formWithJson = document.getElementById('with-json');
-    formWithJson.schema = JSON.stringify(schema);
-    formWithJson.data = JSON.stringify(data);
-    formWithJson.ajv = JSON.stringify(ajv);
-    formWithJson.addEventListener('dataChange', (evt) => console.log("with-json:dataChange", evt.detail));
+      // Using JsonFroms with string, like <ng-jsonforms schema='{"type": "object"...}'...></ng-jsonforms>
+      const formWithJson = document.getElementById('with-json');
+      formWithJson.schema = JSON.stringify(schema);
+      formWithJson.data = JSON.stringify(data);
+      formWithJson.options = JSON.stringify(options);
+      formWithJson.addEventListener('dataChange', (evt) => console.log("with-json:dataChange", evt.detail));
+    }, 1000);
   </script>
 </body>
 </html>
