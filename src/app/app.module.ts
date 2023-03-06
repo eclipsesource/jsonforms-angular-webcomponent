@@ -4,9 +4,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { JsonFormsAngularMaterialModule } from '@jsonforms/angular-material';
-import { JsonFormsAngularService } from '@jsonforms/angular';
 import { JsonFormsModule } from '@jsonforms/angular';
-import { angularMaterialRenderers } from '@jsonforms/angular-material';
 import { createCustomElement } from '@angular/elements';
 
 @NgModule({
@@ -18,16 +16,11 @@ import { createCustomElement } from '@angular/elements';
     JsonFormsAngularMaterialModule,
   ],
   schemas: [],
-  providers: [],
-  entryComponents: [AppComponent]
+  providers: []
 })
 
 export class AppModule {
-  constructor(jsonformsService: JsonFormsAngularService, private injector: Injector) {
-    jsonformsService.init({
-      renderers: angularMaterialRenderers
-    });
-  }
+  constructor(private injector: Injector) {}
 
   ngDoBootstrap() {
     const el = createCustomElement(AppComponent, { injector: this.injector });
